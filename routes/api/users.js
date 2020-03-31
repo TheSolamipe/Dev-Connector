@@ -12,7 +12,7 @@ const User = require("../../models/User");
 // @access: Public
 router.get("/test", (req, res) => res.json({ msg: "Users file works" }));
 
-// @route:  GET api/users/register
+// @route:  POST api/users/register
 // @desc:   Register users
 // @access: Public
 router.post("/register", (req, res) => {
@@ -72,7 +72,7 @@ router.post("/login", (req, res) => {
         jwt.sign(payload, secretOrKey, { expiresIn: 3600 }, (err, token) => {
           res.json({
             success: true,
-            toekn: "Bearer " + token
+            token: "Bearer " + token
           });
         });
       } else {

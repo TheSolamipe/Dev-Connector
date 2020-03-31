@@ -4,6 +4,7 @@ passport for authentication*/
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const passport = require("passport");
 
 //loading routes
 const users = require("./routes/api/users");
@@ -28,6 +29,12 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Hello, i'm working");
 });
+
+//passport midddleware
+app.use(passport.initialize());
+
+//Passport Config
+require("./config/passport")(passport);
 
 //Use Routes
 app.use("/api/users", users);
