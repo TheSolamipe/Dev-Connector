@@ -25,7 +25,6 @@ module.exports = function validateRegisterInput(data) {
     // setting rule to check email validity
     errors.email = "Email is invalid";
   }
-  u;
   if (Validator.isEmpty(data.password)) {
     // setting rule to make password field compulsory
     errors.password = "Password field is required";
@@ -45,6 +44,6 @@ module.exports = function validateRegisterInput(data) {
 
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };

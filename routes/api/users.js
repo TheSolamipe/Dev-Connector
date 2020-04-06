@@ -29,7 +29,7 @@ router.post("/register", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  User.findOne({ email: req.body.email }).then(user => {
+  User.findOne({ email: req.body.email }).then((user) => {
     if (user) {
       errors.email = "User already exists";
       return res.status(400).json(errors);
@@ -37,14 +37,14 @@ router.post("/register", (req, res) => {
       const avatar = gravatar.url(req.body.email, {
         s: "200", //Size
         r: "pg", //Rating
-        d: "mm" //Default
+        d: "mm", //Default
       });
 
       const newUser = new User({
         name: req.body.name,
         email: req.body.email,
         avatar,
-        password: req.body.password
+        password: req.body.password,
       });
 
       bcrypt.genSalt(10, (err, salt) => {
@@ -53,8 +53,8 @@ router.post("/register", (req, res) => {
           newUser.password = hash;
           newUser
             .save()
-            .then(user => res.json(user))
-            .catch(err => console.log(err));
+            .then((user) => res.json(user))
+            .catch((err) => console.log(err));
         });
       });
     }
@@ -76,7 +76,7 @@ router.post("/login", (req, res) => {
   const password = req.body.password;
 
   //find user by email
-  User.findOne({ email }).then(user => {
+  User.findOne({ email }).then((user) => {
     //check for user
     if (!user) {
       errors.email = "User not found";
@@ -84,7 +84,7 @@ router.post("/login", (req, res) => {
     }
 
     //check password
-    bcrypt.compare(password, user.password).then(isMatch => {
+    bcrypt.compare(password, user.password).then((isMatch) => {
       if (isMatch) {
         //User Matched
         const payload = { id: user.id, name: user.name, avatar: user.avatar }; //Create jwt payload
@@ -96,7 +96,7 @@ router.post("/login", (req, res) => {
           (err, token) => {
             res.json({
               success: true,
-              token: "Bearer " + token
+              token: "Bearer " + token,
             });
           }
         );
@@ -113,9 +113,13 @@ router.post("/login", (req, res) => {
 // @access: Private
 router.get(
   "/current",
-  passport.authenticate("jwt", { sesssion: false }),
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    res.json(req.user);
+    res.json({
+      id: req.user.id,
+      name: req.user.name,
+      email: req.user.email,
+    });
   }
 );
 
