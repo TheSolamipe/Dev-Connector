@@ -25,6 +25,8 @@ mongoose
   .connect(db, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
   })
   .then(() => console.log("db connected successfully"))
   .catch((err) => console.log("failed to connect", err));
