@@ -7,6 +7,13 @@ module.exports = function validateProfileInput(data) {
   data.handle = !isEmpty(data.handle) ? data.handle : "";
   data.status = !isEmpty(data.status) ? data.status : "";
   data.skills = !isEmpty(data.skills) ? data.skills : "";
+  data.company = !isEmpty(data.company) ? data.company : "";
+  data.website = !isEmpty(data.website) ? data.website : "";
+  data.youtube = !isEmpty(data.youtube) ? data.youtube : "";
+  data.twitter = !isEmpty(data.twitter) ? data.twitter : "";
+  data.facebook = !isEmpty(data.facebook) ? data.facebook : "";
+  data.instagram = !isEmpty(data.instagram) ? data.instagram : "";
+  data.linkedin = !isEmpty(data.linkedin) ? data.linkedin : "";
 
   if (!Validator.isLength(data.handle, { min: 2, max: 40 })) {
     // setting rule to check handle length
@@ -24,10 +31,10 @@ module.exports = function validateProfileInput(data) {
     // setting rule to make skills field compulsory
     errors.skills = "skills field is required";
   }
-  if (Validator.isEmpty(data.company)) {
-    // setting rule to make company field compulsory
-    errors.company = "company field is required";
-  }
+  // if (Validator.isEmpty(data.company)) {
+  //   // setting rule to make company field compulsory
+  //   errors.company = "company field is required";
+  // }
   if (!Validator.isEmpty(data.website)) {
     if (!Validator.isURL(data.website)) {
       errors.website = "Not a valid URL";

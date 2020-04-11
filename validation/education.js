@@ -21,10 +21,6 @@ module.exports = function validateEducationInput(data) {
     // setting rule to make fieldofstudy field compulsory
     errors.fieldofstudy = "fieldofstudy field is required";
   }
-  if (Validator.isEmpty(data.from)) {
-    // setting rule to make from field compulsory
-    errors.from = "from date field is required";
-  }
 
   return {
     errors,
