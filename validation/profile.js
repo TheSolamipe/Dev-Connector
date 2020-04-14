@@ -31,10 +31,10 @@ module.exports = function validateProfileInput(data) {
     // setting rule to make skills field compulsory
     errors.skills = "skills field is required";
   }
-  // if (Validator.isEmpty(data.company)) {
-  //   // setting rule to make company field compulsory
-  //   errors.company = "company field is required";
-  // }
+  if (Validator.isEmpty(data.company)) {
+    // setting rule to make company field compulsory
+    errors.company = "company field is required";
+  }
   if (!Validator.isEmpty(data.website)) {
     if (!Validator.isURL(data.website)) {
       errors.website = "Not a valid URL";
