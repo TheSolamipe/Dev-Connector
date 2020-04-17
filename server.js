@@ -5,13 +5,28 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
+const cors = require("cors");
+require("dotenv").config();
+//{path: path/filename}
+
+const app = express();
+
+//CORS middleware
+//applying CORS middleware
+app.use(
+  cors({
+    allowedHeaders: ["sessionId", "Content-Type"],
+    exposedHeaders: ["sessionId"],
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+  })
+);
 
 //loading routes
 const users = require("./routes/api/users");
 const profile = require("./routes/api/profile");
 const posts = require("./routes/api/posts");
-
-const app = express();
 
 //Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,9 +46,9 @@ mongoose
   .then(() => console.log("db connected successfully"))
   .catch((err) => console.log("failed to connect", err));
 
-app.get("/", (req, res) => {
-  res.send("Hello, i'm working");
-});
+// app.get("/", (req, res) => {
+//   res.send("Hello, i'm working");
+// });
 
 //passport midddleware
 app.use(passport.initialize());
@@ -46,6 +61,10 @@ app.use("/api/users", users);
 app.use("/api/profile", profile);
 app.use("/api/posts", posts);
 
-const port = process.env.PORT || 5000;
+//process.env variables
+let port = process.env.PORT;
+let host = process.env.HOST;
 
-app.listen(port, () => console.log(`server is listening to port ${port}`));
+app.listen(port, host, () =>
+  console.log(`server is listening to port ${host}:${port}`)
+);
