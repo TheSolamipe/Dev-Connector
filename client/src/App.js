@@ -1,5 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import store from "./store";
+
+import { Provider } from "react-redux";
 
 import "./App.css";
 
@@ -9,20 +12,24 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Footer from "./components/layout/Footer";
 
-function App() {
-  return (
-    <Router>
-      <div className="App">
-        <Navbar />
-        <Route exact path="/" component={Landing} />
-        <div className="container">
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-        </div>
-        <Footer />
-      </div>
-    </Router>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <Router>
+          <div className="App">
+            <Navbar />
+            <Route exact path="/" component={Landing} />
+            <div className="container">
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
+            </div>
+            <Footer />
+          </div>
+        </Router>
+      </Provider>
+    );
+  }
 }
 
 export default App;
