@@ -1,16 +1,34 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import store from "./store";
 
+// needed to keep user logged in even when we refresh pages.
+import jwt_decode from "jwt-decode";
+import setAuthToken from "./utils/setAuthToken";
+import { setCurrentUser } from "./actions/authActions";
+
+//needed to connect redux to our react application
+import store from "./store";
 import { Provider } from "react-redux";
 
+//styles
 import "./App.css";
 
+//Application components
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Footer from "./components/layout/Footer";
+
+//Check for token
+if (localStorage.jwtToken) {
+  //set auth token header auth
+  setAuthToken(localStorage.jwtToken);
+  //decode token and get user info and expiration
+  const decoded = jwt_decode(localStorage.jwtToken);
+  // SET user and isAuthenticated
+  store.dispatch(setCurrentUser(decoded));
+}
 
 class App extends React.Component {
   render() {
