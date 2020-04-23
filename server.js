@@ -15,8 +15,12 @@ const app = express();
 //applying CORS middleware
 app.use(
   cors({
-    allowedHeaders: ["sessionId", "Content-Type"],
-    exposedHeaders: ["sessionId"],
+    allowedHeaders: [
+      "sessionId",
+      "Content-Type",
+      "Origin, X-Requested-With, Accept, Authorization, remember-me, type",
+    ],
+    exposedHeaders: ["sessionId, Authorization"],
     origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     preflightContinue: false,

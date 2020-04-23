@@ -10,9 +10,9 @@ const Loading = () => {
             <h1 className="display-4 text-center">
               <Bone width={10} />
             </h1>
-            <p className="lead text-center">
+            <div className="lead text-center">
               <Bone />
-            </p>
+            </div>
             <form>
               <div className="form-group">
                 <Bone height={25} />
