@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getCurrentProfile } from "../../actions/profileActions";
-import Loading from "../layout/Loading";
+import Loading from "../common/Loading";
 
 class Dashboard extends Component {
   componentDidMount() {

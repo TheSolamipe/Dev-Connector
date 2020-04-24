@@ -1,6 +1,6 @@
-import React from "react";
+// import React from "react";
 import axios from "axios";
-import Loading from "../components/layout/Loading";
+// import Loading from "../components/common/Loading";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 
@@ -10,7 +10,7 @@ import { GET_ERRORS, SET_CURRENT_USER } from "./types";
 export const registerUser = (userData, history) => (dispatch) => {
   axios
     .post(`${process.env.REACT_APP_BASE_URL}/api/users/register`, userData)
-    .then((res) => history.push("/login") || <Loading />)
+    .then((res) => history.push("/login"))
     .catch((err) =>
       dispatch({
         type: GET_ERRORS,
