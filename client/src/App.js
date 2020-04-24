@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // needed to keep user logged in even when we refresh pages.
 import jwt_decode from "jwt-decode";
@@ -13,6 +13,9 @@ import { Provider } from "react-redux";
 
 //styles
 import "./App.css";
+
+//Protected route
+import PrivateRoute from "./components/common/PrivateRoute";
 
 //Application components
 import Navbar from "./components/layout/Navbar";
@@ -54,7 +57,9 @@ class App extends React.Component {
             <div className="container">
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
-              <Route exact path="/dashboard" component={Dashboard} />
+              <Switch>
+                <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              </Switch>
             </div>
             <Footer />
           </div>
