@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-// import createProfile from "../../actions/profileActions";
-import { Link } from "react-router-dom";
-// import TextFieldGroup from "../common/TextFieldGroup"
+import { createProfile } from "../../actions/profileActions";
+import { Link, withRouter } from "react-router-dom";
+import TextFieldGroup from "../common/TextFieldGroup";
+import TextAreaGroup from "../common/TextAreaGroup";
+import SelectListGroup from "../common/SelectListGroup";
+import InputGroup from "../common/InputGroup";
 
 class CreateProfile extends Component {
   constructor() {
@@ -11,6 +14,7 @@ class CreateProfile extends Component {
     this.state = {
       displaySocialInputs: false,
       handle: "",
+      company: "",
       website: "",
       location: "",
       status: "",
@@ -24,8 +28,115 @@ class CreateProfile extends Component {
       youtube: "",
       errors: {},
     };
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+
+    const profileData = {
+      handle: this.state.handle,
+      company: this.state.company,
+      website: this.state.website,
+      location: this.state.location,
+      status: this.state.status,
+      skills: this.state.skills,
+      githubusername: this.state.githubusername,
+      bio: this.state.bio,
+      twitter: this.state.twitter,
+      facebook: this.state.facebook,
+      instagram: this.state.instagram,
+      linkedin: this.state.linkedin,
+      youtube: this.state.youtube,
+    };
+    this.props.createProfile(profileData, this.props.history);
+  }
+
   render() {
+    const { errors, displaySocialInputs } = this.state;
+
+    let socialInputs;
+    if (displaySocialInputs) {
+      socialInputs = (
+        <div>
+          <InputGroup
+            className="form-control form-control-lg"
+            placeholder="Twitter Profile URL"
+            name="twitter"
+            value={this.state.twitter}
+            onChange={this.onChange}
+            error={errors.twitter}
+            icon="fab fa-twitter"
+            type="text"
+          />
+          <InputGroup
+            className="form-control form-control-lg"
+            placeholder="Facebook Page URL"
+            name="facebook"
+            value={this.state.facebook}
+            onChange={this.onChange}
+            error={errors.facebook}
+            icon="fab fa-facebook"
+            type="text"
+          />
+          <InputGroup
+            className="form-control form-control-lg"
+            placeholder="Linkedin Profile URL"
+            name="linkedin"
+            value={this.state.linkedin}
+            onChange={this.onChange}
+            error={errors.linkedin}
+            icon="fab fa-linkedin"
+            type="text"
+          />
+          <InputGroup
+            className="form-control form-control-lg"
+            placeholder="YouTube Channel URL"
+            name="youtube"
+            value={this.state.youtube}
+            onChange={this.onChange}
+            error={errors.youtube}
+            icon="fab fa-youtube"
+            type="text"
+          />
+          <InputGroup
+            className="form-control form-control-lg"
+            placeholder="Instagram Page URL"
+            name="instagram"
+            value={this.state.instagram}
+            onChange={this.onChange}
+            error={errors.instagram}
+            icon="fab fa-instagram"
+            type="text"
+          />
+        </div>
+      );
+    }
+    //Select options for status
+    const options = [
+      { label: "* Select Professional Status", value: 0 },
+      { label: "Creative Director", value: "Creative Director" },
+      { label: "Developer", value: "Developer" },
+      { label: "Junior Developer", value: "Junior Developer" },
+      { label: "Senior Developer", value: "Senior Developer" },
+      { label: "Manager", value: "Manager" },
+      { label: "Student", value: "Student" },
+      { label: "Intern", value: "Intern" },
+      { label: "Instructor", value: "Instructor" },
+      { label: "Other", value: "Other" },
+    ];
+
     return (
       <div className="create-profile">
         <div className="container">
@@ -39,185 +150,104 @@ class CreateProfile extends Component {
                 Let's get some information to make your profile stand out
               </p>
               <small className="d-block pb-3">* = required field</small>
-              <form action="add-experience.html">
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    placeholder="* Profile handle"
-                    name="handle"
-                    required
-                  />
-                  <small className="form-text text-muted">
-                    A unique handle for your profile URL. Your full name,
-                    company name, nickname, etc (This CAN'T be changed later)
-                  </small>
-                </div>
-                <div className="form-group">
-                  <select
-                    className="form-control form-control-lg"
-                    name="status"
-                  >
-                    <option value="0">* Select Professional Status</option>
-                    <option value="Developer">Developer</option>
-                    <option value="Junior Developer">Junior Developer</option>
-                    <option value="Senior Developer">Senior Developer</option>
-                    <option value="Manager">Manager</option>
-                    <option value="Student or Learning">
-                      Student or Learning
-                    </option>
-                    <option value="Instructor">Instructor or Teacher</option>
-                    <option value="Intern">Intern</option>
-                    <option value="Other">Other</option>
-                  </select>
-                  <small className="form-text text-muted">
-                    Give us an idea of where you are at in your career
-                  </small>
-                </div>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    placeholder="Company"
-                    name="company"
-                  />
-                  <small className="form-text text-muted">
-                    Could be your own company or one you work for
-                  </small>
-                </div>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    placeholder="Website"
-                    name="website"
-                  />
-                  <small className="form-text text-muted">
-                    Could be your own or a company website
-                  </small>
-                </div>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    placeholder="Location"
-                    name="location"
-                  />
-                  <small className="form-text text-muted">
-                    City & state suggested (eg. Boston, MA)
-                  </small>
-                </div>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    placeholder="Skills"
-                    name="skills"
-                  />
-                  <small className="form-text text-muted">
-                    Please use comma separated values (eg.
-                    HTML,CSS,JavaScript,PHP)
-                  </small>
-                </div>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    placeholder="Github Username"
-                    name="githubusername"
-                  />
-                  <small className="form-text text-muted">
-                    If you want your latest repos and a Github link, include
-                    your username
-                  </small>
-                </div>
-                <div className="form-group">
-                  <textarea
-                    className="form-control form-control-lg"
-                    placeholder="A short bio of yourself"
-                    name="bio"
-                  ></textarea>
-                  <small className="form-text text-muted">
-                    Tell us a little about yourself
-                  </small>
-                </div>
-
+              <form onSubmit={this.onSubmit}>
+                <TextFieldGroup
+                  type="text"
+                  className="form-control form-control-lg"
+                  placeholder="* Profile handle"
+                  name="handle"
+                  value={this.state.handle}
+                  onChange={this.onChange}
+                  error={errors.handle}
+                  info="A unique handle for your profile URL. Your full name, company name, nickname"
+                />
+                <SelectListGroup
+                  type="text"
+                  className="form-control form-control-lg"
+                  placeholder="status"
+                  name="status"
+                  value={this.state.status}
+                  onChange={this.onChange}
+                  error={errors.status}
+                  info="Give us an idea of where you are at in your career"
+                  options={options}
+                />
+                <TextFieldGroup
+                  type="text"
+                  className="form-control form-control-lg"
+                  placeholder="Company"
+                  name="company"
+                  value={this.state.company}
+                  onChange={this.onChange}
+                  error={errors.company}
+                  info="Could be your own company or one you work for"
+                />
+                <TextFieldGroup
+                  type="text"
+                  className="form-control form-control-lg"
+                  placeholder="Website"
+                  name="website"
+                  value={this.state.website}
+                  onChange={this.onChange}
+                  error={errors.website}
+                  info="Could be your own or a company website"
+                />
+                <TextFieldGroup
+                  type="text"
+                  className="form-control form-control-lg"
+                  placeholder="Location"
+                  name="location"
+                  value={this.state.location}
+                  onChange={this.onChange}
+                  error={errors.location}
+                  info="City & state suggested (eg. Lagos-island, Lagos)"
+                />
+                <TextFieldGroup
+                  type="text"
+                  className="form-control form-control-lg"
+                  placeholder="Skills"
+                  name="skills"
+                  value={this.state.skills}
+                  onChange={this.onChange}
+                  error={errors.skills}
+                  info="Please use comma separated values (eg.
+                    HTML,CSS,JavaScript,PHP)"
+                />
+                <TextFieldGroup
+                  type="text"
+                  className="form-control form-control-lg"
+                  placeholder="Github Username"
+                  name="githubusername"
+                  value={this.state.githubusername}
+                  onChange={this.onChange}
+                  error={errors.githubusername}
+                  info="If you want your latest repos and a Github link, include
+                  your username"
+                />
+                <TextAreaGroup
+                  className="form-control form-control-lg"
+                  placeholder="A short bio of yourself"
+                  name="bio"
+                  value={this.state.bio}
+                  onChange={this.onChange}
+                  error={errors.bio}
+                  info="Tell us a little about yourself"
+                />
                 <div className="mb-3">
-                  <button type="button" className="btn btn-light">
+                  <button
+                    onClick={() => {
+                      this.setState((prevState) => ({
+                        displaySocialInputs: !prevState.displaySocialInputs,
+                      }));
+                    }}
+                    type="button"
+                    className="btn btn-light"
+                  >
                     Add Social Network Links
                   </button>
                   <span className="text-muted">Optional</span>
                 </div>
-
-                <div className="input-group mb-3">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text">
-                      <i className="fab fa-twitter"></i>
-                    </span>
-                  </div>
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    placeholder="Twitter Profile URL"
-                    name="twitter"
-                  />
-                </div>
-
-                <div className="input-group mb-3">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text">
-                      <i className="fab fa-facebook"></i>
-                    </span>
-                  </div>
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    placeholder="Facebook Page URL"
-                    name="facebook"
-                  />
-                </div>
-
-                <div className="input-group mb-3">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text">
-                      <i className="fab fa-linkedin"></i>
-                    </span>
-                  </div>
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    placeholder="Linkedin Profile URL"
-                    name="linkedin"
-                  />
-                </div>
-
-                <div className="input-group mb-3">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text">
-                      <i className="fab fa-youtube"></i>
-                    </span>
-                  </div>
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    placeholder="YouTube Channel URL"
-                    name="youtube"
-                  />
-                </div>
-
-                <div className="input-group mb-3">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text">
-                      <i className="fab fa-instagram"></i>
-                    </span>
-                  </div>
-                  <input
-                    type="text"
-                    className="form-control form-control-lg"
-                    placeholder="Instagram Page URL"
-                    name="instagram"
-                  />
-                </div>
+                {socialInputs}
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
             </div>
@@ -239,4 +269,6 @@ const mapStateToProps = (state) => ({
   errors: state.errors,
 });
 
-export default connect(mapStateToProps)(CreateProfile);
+export default connect(mapStateToProps, { createProfile })(
+  withRouter(CreateProfile)
+);
