@@ -41,7 +41,7 @@ const ProfileSchema = new Schema({
         type: String,
         required: true,
       },
-      company2: {
+      company: {
         type: String,
         required: true,
       },
