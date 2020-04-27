@@ -18,13 +18,13 @@ class Navbar extends Component {
     const authLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
-          <Link className="nav-link" to="/user/post">
-            post
+          <Link className="nav-link" to="/dashboard">
+            Dashboard
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/user/dashboard">
-            dashboard
+          <Link className="nav-link" to="/post">
+            post
           </Link>
         </li>
         <li className="nav-item">
@@ -34,7 +34,7 @@ class Navbar extends Component {
             className="nav-Link"
           >
             <img
-              className="nav-Link rounded-circle"
+              className=" rounded-circle"
               src={user.avatar}
               alt={user.name}
               style={{ width: "25px", marginRight: "5px" }}
