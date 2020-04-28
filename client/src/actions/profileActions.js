@@ -6,6 +6,7 @@ import {
   GET_ERRORS,
   CLEAR_CURRENT_PROFILE,
   SET_CURRENT_USER,
+  GET_PROFILES,
 } from "./types";
 
 //Get current profile
@@ -120,6 +121,25 @@ export const deleteAccount = () => (dispatch) => {
         })
       );
   }
+};
+
+//Get All Profiles
+export const getProfiles = () => (dispatch) => {
+  dispatch(setProfileLoading());
+  axios
+    .get(`${process.env.REACT_APP_BASE_URL}/api/profile/all`)
+    .then((res) =>
+      dispatch({
+        type: GET_PROFILES,
+        payload: res.data,
+      })
+    )
+    .catch((err) =>
+      dispatch({
+        type: GET_PROFILES,
+        payload: null,
+      })
+    );
 };
 
 //Profile loading
